@@ -54,3 +54,17 @@ insert into orderdetail(oID, pID, odQTY) values (3,1,8);
 insert into orderdetail(oID, pID, odQTY) values (2,5,4);
 insert into orderdetail(oID, pID, odQTY) values (2,3,3);
 
+select oID, oDate, oTotalPrice
+from `order`;
+
+select c.cName, p.pName, od.odQTY, o.oID
+from customer c join `order` o on c.cID = o.cID join orderdetail od on o.oID = od.oID
+join product p on od.pID = p.pID;
+
+select c.cName
+from customer c
+where not exists(select o.cID from `order` o where o.cID = c.cID );
+
+select o.oID, o.oDate, sum((od.odQTY * p.pPrice)) as oTotalPrice
+from `order` o join orderdetail od on o.oID = od.oID join product p on od.pID = p.pID
+group by o.oID;
